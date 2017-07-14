@@ -13,7 +13,7 @@ namespace AppInitialisation
 
         public Guid Signature { get; } = Guid.NewGuid();
 
-        public readonly TimeSpan Duration = TimeSpan.FromSeconds(500);
+        public readonly TimeSpan Duration = TimeSpan.FromSeconds(60);
 
         private ILogger _logger;
 

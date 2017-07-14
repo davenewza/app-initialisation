@@ -10,6 +10,7 @@ namespace AppInitialisation
     public class Controllers : Controller
     {
         private Initialisation _initialisationModule;
+
         private ILogger _logger;
 
         public Controllers(Initialisation initialisationModule, ILogger<Controllers> logger)
@@ -33,7 +34,7 @@ namespace AppInitialisation
             while (!_initialisationModule.IsWarm)
             {
                 _logger.LogInformation($"Not warm yet ({count++})");
-                Task.Delay(TimeSpan.FromSeconds(4)).Wait();
+                Task.Delay(TimeSpan.FromSeconds(1)).Wait();
             }
 
             return Json(new { Message = "Cozy and warm!" });

@@ -12,8 +12,6 @@ namespace AppInitialisation
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().AddJsonOptions(options =>
@@ -28,7 +26,6 @@ namespace AppInitialisation
             services.AddSingleton<Initialisation>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory
@@ -42,7 +39,6 @@ namespace AppInitialisation
                 app.UseDeveloperExceptionPage();
             }
 
-            // Use MVC.
             app.UseMvc();
 
             loggerFactory.CreateLogger<Startup>().LogInformation($"{Environment.MachineName} {Process.GetCurrentProcess().Id} started.");
