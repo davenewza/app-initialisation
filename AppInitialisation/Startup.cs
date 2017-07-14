@@ -25,7 +25,7 @@ namespace AppInitialisation
                 options.SerializerSettings.Culture = CultureInfo.InvariantCulture;
             });
 
-            services.AddSingleton<InitialisationModule>();
+            services.AddSingleton<Initialisation>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

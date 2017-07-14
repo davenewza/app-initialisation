@@ -6,44 +6,13 @@ using System.Threading.Tasks;
 
 namespace AppInitialisation
 {
-    public class InitialisationModule
-    {
-        public bool IsWarm { get; private set; } = false;
-
-        public bool IsWarmingUp { get; private set; } = false;
-
-        public readonly TimeSpan Duration = TimeSpan.FromSeconds(500);
-        private ILogger _logger;
-
-        public InitialisationModule(ILogger<InitialisationModule> logger)
-        {
-            _logger = logger;
-        }
-
-        public void Initialise()
-        {
-            if (IsWarm)
-            {
-                _logger.LogInformation($"{Environment.MachineName} {Process.GetCurrentProcess().Id} already warm.");
-            }
-            else
-            {
-                IsWarmingUp = true;
-                _logger.LogInformation($"{Environment.MachineName} {Process.GetCurrentProcess().Id} warming up.");
-                Task.Delay(Duration).Wait();
-                IsWarm = true;
-                IsWarmingUp = false;
-            }
-        }
-    }
-
-    [Route("api/things")]
+    [Route("api/resource")]
     public class Controllers : Controller
     {
-        private InitialisationModule _initModule;
+        private Initialisation _initModule;
         private ILogger _logger;
 
-        public Controllers(InitialisationModule initModule, ILogger<Controllers> logger)
+        public Controllers(Initialisation initModule, ILogger<Controllers> logger)
         {
             _initModule = initModule;
             _logger = logger;
@@ -52,7 +21,7 @@ namespace AppInitialisation
         [HttpGet]
         public IActionResult Get()
         {
-            _logger.LogInformation($"{Environment.MachineName} {Process.GetCurrentProcess().Id} GET api/things.");
+            _logger.LogInformation($"{Environment.MachineName} {Process.GetCurrentProcess().Id} GET api/resource.");
 
             int count = 0;
 
@@ -68,15 +37,6 @@ namespace AppInitialisation
             }
 
             return Json(new { Message = "Cozy and warm!" });
-
-            //if (_initModule.IsWarm)
-            //{
-            //    return Json(new { Message = "Cozy and warm!" });
-            //}
-            //else
-            //{
-            //    return Json(new { Message = "I am not warmed up!" });
-            //}
         }
 
         [HttpGet("initialise")]
