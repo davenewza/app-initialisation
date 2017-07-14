@@ -9,12 +9,12 @@ namespace AppInitialisation
     [Route("api/resource")]
     public class Controllers : Controller
     {
-        private Initialisation _initModule;
+        private Initialisation _initialisationModule;
         private ILogger _logger;
 
-        public Controllers(Initialisation initModule, ILogger<Controllers> logger)
+        public Controllers(Initialisation initialisationModule, ILogger<Controllers> logger)
         {
-            _initModule = initModule;
+            _initialisationModule = initialisationModule;
             _logger = logger;
         }
 
@@ -25,12 +25,12 @@ namespace AppInitialisation
 
             int count = 0;
 
-            if (!_initModule.IsWarm && !_initModule.IsWarmingUp)
+            if (!_initialisationModule.IsWarm && !_initialisationModule.IsWarmingUp)
             {
-                _initModule.Initialise();
+                _initialisationModule.Initialise();
             }
 
-            while (!_initModule.IsWarm)
+            while (!_initialisationModule.IsWarm)
             {
                 _logger.LogInformation($"Not warm yet ({count++})");
                 Task.Delay(TimeSpan.FromSeconds(4)).Wait();
@@ -39,12 +39,18 @@ namespace AppInitialisation
             return Json(new { Message = "Cozy and warm!" });
         }
 
+        [HttpGet("signature")]
+        public string GetSignature()
+        {
+            return _initialisationModule.Signature.ToString();
+        }
+
         [HttpGet("initialise")]
         public IActionResult Initialise()
         {
             _logger.LogInformation($"{Environment.MachineName} {Process.GetCurrentProcess().Id} initialising.");
 
-            _initModule.Initialise();
+            _initialisationModule.Initialise();
 
             _logger.LogInformation($"{Environment.MachineName} {Process.GetCurrentProcess().Id} initialised.");
 

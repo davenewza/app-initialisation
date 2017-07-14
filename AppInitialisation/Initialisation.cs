@@ -11,7 +11,10 @@ namespace AppInitialisation
 
         public bool IsWarmingUp { get; private set; } = false;
 
+        public Guid Signature { get; } = Guid.NewGuid();
+
         public readonly TimeSpan Duration = TimeSpan.FromSeconds(500);
+
         private ILogger _logger;
 
         public Initialisation(ILogger<Initialisation> logger)
